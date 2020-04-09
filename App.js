@@ -9,6 +9,7 @@ import * as Font from 'expo-font';
 import Home from './components/Home';
 import Login from './components/Login';
 import Welcome from './components/Welcome';
+import SignUp from './components/SignUp';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ export default class App extends React.Component {
           <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen name="Welcome" component={Welcome}/>
           <Stack.Screen name="Login" component={Login}/> 
+          <Stack.Screen name="SignUp" component={SignUp}/> 
           <Stack.Screen 
           name="Home"
           component={Home} 

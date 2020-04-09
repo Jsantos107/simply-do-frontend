@@ -13,7 +13,7 @@ class Welcome extends Component {
                 <Text style={styles.title}> Lets start simply doing together </Text>
                 <View style={styles.btnContainer}> 
                     <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('Login')}
+                        onPress={() => this.props.navigation.navigate('SignUp')}
                         style={styles.button}>
                         <Text style={styles.btnText}> Sign-up </Text>
                     </TouchableOpacity>
