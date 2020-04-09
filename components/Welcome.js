@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
 
 class Welcome extends Component {
     state={
@@ -8,30 +8,58 @@ class Welcome extends Component {
 
     render(){
     return(
-        <View style={styles.home} >
-            <Text style={styles.title}> !!! </Text>
-            <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Login')}>
-                <Text style={styles.title}> Login </Text>
-            </TouchableOpacity>
-        </View>
+        <Modal animationType='slide'>
+            <View style={styles.welcome} >
+                <Text style={styles.title}> Lets start simply doing together </Text>
+                <View style={styles.btnContainer}> 
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('Login')}
+                        style={styles.button}>
+                        <Text style={styles.btnText}> Sign-up </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('Login')}
+                        style={styles.button}>
+                        <Text style={styles.btnText}> Login </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
     );
     }
 };
 
 const styles = StyleSheet.create({
-    home:{
+    welcome:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center', 
         width:'100%',
         paddingTop: 50,
-        backgroundColor: '#f7287b',
-        alignItems: 'center', 
-        justifyContent: 'center'
+        backgroundColor: '#d7385e'
     },
     title:{
-        color:'black',
-        fontSize: 18,
-        fontWeight: '900',
-        marginBottom: '10%'
+        fontSize: 30,
+        textAlign: 'center',
+        margin:15,
+        fontFamily: "Kanit-Regular"
+    },
+    btnContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+        width: '75%',
+        flexDirection: 'row',
+    },
+    button:{
+        backgroundColor: "#e7d39f",
+        padding: 15,
+        width:'45%',
+    },
+    btnText:{
+        fontSize:18,
+        textAlign:'center',
+        fontFamily: "Kanit-Regular"
     }
 });
 
