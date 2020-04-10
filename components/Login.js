@@ -1,4 +1,5 @@
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import { View, TextInput, StyleSheet, Button, Modal, AsyncStorage, StatusBar, TouchableOpacity, Text } from 'react-native'
 import Home from './Home';
 
@@ -7,14 +8,14 @@ export default class Login extends Component{
     state={
         username:'',
         password:'',
-    }
+    };
     cancel = () => {
         this.setState({
             username: '',
             password: ''
         })
         this.props.navigation.navigate('Welcome')
-    }
+    };
     
     render(){
         return( 
@@ -36,7 +37,7 @@ export default class Login extends Component{
                             <Text style={styles.btnText}>Cancel</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => alert('hit!')}
+                            onPress={this.login}
                             style={styles.button}>
                             <Text style={styles.btnText}>Login</Text>
                         </TouchableOpacity>
@@ -44,6 +45,59 @@ export default class Login extends Component{
                 </View>
             </Modal>
         );
+    };
+    login = async() => {
+        if(this.state.username && this.state.password){
+            axios.post("https://simply-do-backend.herokuapp.com/login", {
+                username: this.state.username, 
+                password: this.state.password
+            })
+            .then(response => this.tokenData(response.data))
+            .then(async () => { this.log() })
+            .catch(error => {
+                console.log(error)
+                alert("Something went wrrong please try again!")
+            })
+        }else{
+            alert('Username or password are incorrect!')
+        };
+    };
+
+    tokenData = async(data) =>{
+        await AsyncStorage.setItem('token', data.token)
+    };
+
+    log = async() => {
+        await AsyncStorage.getItem('token') ? this.userInfo() : alert("Please Try Again")
+    };
+
+    userInfo = async () => {
+        const token = await AsyncStorage.getItem('token')
+
+        axios.get("https://simply-do-backend.herokuapp.com/users", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+              } 
+        })
+        .then(async (response) => this.userData(response.data))
+        .then(await AsyncStorage.getItem('userId') ? this.directHome() : alert("Please Try Again"))
+        .catch(error => {
+            console.log(error)
+            alert("Something went wrongg please try again!")
+        });
+    };
+    directHome = () => {
+        this.props.navigation.navigate('Home')
+    };
+    userData = async(data) =>{
+        try {
+        await AsyncStorage.setItem('userId', JSON.stringify(data.user.id))
+        await AsyncStorage.setItem('username', data.user.username)
+          } catch (error) {
+            console.log(error)
+            alert('Something went wroong please try again!')
+          };
     };
 };
 
