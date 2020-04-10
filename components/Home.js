@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
 
 class Home extends Component {
 
     render(){
     return(
-        <View style={styles.home} >
-            <Text style={styles.title}> Welcome!!! </Text>
-            <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Home')}>
-                <Text style={styles.title}> Home </Text>
-            </TouchableOpacity>
-        </View>
+        <Modal animationType='fade'>
+            <View style={styles.home} >
+                <Text style={styles.title}> Welcome!!! </Text>
+                <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('Home')}>
+                    <Text style={styles.title}> Home </Text>
+                </TouchableOpacity>
+            </View>
+        </Modal>
     );
     }
 };
