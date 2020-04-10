@@ -35,19 +35,7 @@ export default class App extends React.Component {
           <Stack.Screen name="Welcome" component={Welcome}/>
           <Stack.Screen name="Login" component={Login}/> 
           <Stack.Screen name="SignUp" component={SignUp}/> 
-          <Stack.Screen 
-          name="Home"
-          component={Home} 
-          options={{
-            headerTitle: "header",
-            headerRight: () => (
-              <Button
-                onPress={() => alert('This is a button!')}
-                title="Info"
-                color="blue"
-              />
-            ),
-          }}  />
+          <Stack.Screen name="Home" component={Home}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
