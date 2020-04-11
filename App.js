@@ -3,7 +3,6 @@ import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import Home from './components/Home';
