@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet, View, Text, TouchableOpacity, Modal, Image } from 'react-native';
@@ -8,25 +7,29 @@ import Welcome from './Welcome';
 const Drawer = createDrawerNavigator();
 
 class Home extends Component {
-
+    state={
+        list:'',
+        done:false,
+    };
     render(){
         return(
             <Modal animationType='fade'> 
                 <View>
-                    
+
                 </View>
                 <View style={styles.header} >
                     <View style={styles.navContainer}>
                         <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('Home')}>
-                            <Image style={styles.logo} source={require('../SDPlus.png')}></Image>
+                            onPress={() => this.props.navigation.navigate('AddList')}>
+                            <Image style={styles.logo} source={require('../Images/SDPlus.png')}></Image>
                         </TouchableOpacity>                      
                     </View>
                 </View>
 
             </Modal>
         );
-    }
+    };
+    
 };
 
 const styles = StyleSheet.create({
