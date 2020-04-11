@@ -56,7 +56,7 @@ export default class Login extends Component{
             .then(async () => { this.log() })
             .catch(error => {
                 console.log(error)
-                alert("Something went wrrong please try again!")
+                alert("Username or password are incorrect!")
             })
         }else{
             alert('Username or password are incorrect!')
@@ -84,7 +84,7 @@ export default class Login extends Component{
         .then(await AsyncStorage.getItem('userId') ? this.directHome() : alert("Please Try Again"))
         .catch(error => {
             console.log(error)
-            alert("Something went wrongg please try again!")
+            alert("Something went wrong please try again!")
         });
     };
     directHome = () => {
@@ -96,7 +96,7 @@ export default class Login extends Component{
         await AsyncStorage.setItem('username', data.user.username)
           } catch (error) {
             console.log(error)
-            alert('Something went wroong please try again!')
+            alert('Something went wrong please try again!')
           };
     };
 };
