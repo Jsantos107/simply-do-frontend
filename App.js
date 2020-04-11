@@ -9,6 +9,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Welcome from './components/Welcome';
 import SignUp from './components/SignUp';
+import AddList from './components/AddList'
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ export default class App extends React.Component {
           <Stack.Screen name="Login" component={Login}/> 
           <Stack.Screen name="SignUp" component={SignUp}/> 
           <Stack.Screen name="Home" component={Home}/>
+          <Stack.Screen name="AddList" component={AddList}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
