@@ -81,10 +81,11 @@ export default class Login extends Component{
               } 
         })
         .then(async (response) => this.userData(response.data))
-        .then(await AsyncStorage.getItem('userId') ? this.directHome() : alert("Please Try Again"))
+        .then( this.directHome() )
         .catch(error => {
             console.log(error)
             alert("Something went wrong please try again!")
+            this.props.navigation.navigate('Welcome')
         });
     };
     directHome = () => {
@@ -92,11 +93,12 @@ export default class Login extends Component{
     };
     userData = async(data) =>{
         try {
-        await AsyncStorage.setItem('userId', JSON.stringify(data.user.id))
-        await AsyncStorage.setItem('username', data.user.username)
+            await AsyncStorage.setItem('userId', JSON.stringify(data.user.id))
+            await AsyncStorage.setItem('username', data.user.username)
           } catch (error) {
             console.log(error)
             alert('Something went wrong please try again!')
+            this.props.navigation.navigate('Welcome')
           };
     };
 };
