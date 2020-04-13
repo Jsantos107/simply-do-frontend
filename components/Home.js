@@ -1,21 +1,50 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, Image, AsyncStorage, Button } from 'react-native';
 import Welcome from './Welcome';
+import { FlatList } from 'react-native-gesture-handler';
+import ListHome from './ListHome'
 
 const Drawer = createDrawerNavigator();
 
 class Home extends Component {
     state={
-        list:'',
-        done:false,
+        lists:[],
+        done:false
+    };
+    componentDidMount(){ this.loadPage() }
+
+    loadPage = async () => {
+        const token = await AsyncStorage.getItem('token')
+        axios.get("https://simply-do-backend.herokuapp.com/users", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+              } 
+        })
+        .then(async (response) => this.list(response.data))
+    }
+    list = async(data) =>{
+        try {
+            const lists = data.user.lists
+            this.setState({
+                lists: lists
+            })
+          } catch (error) {
+            console.log(error)
+            alert('Something went wrong please try again!')
+            this.props.navigation.navigate('Welcome')
+          };
     };
     render(){
         return(
             <Modal animationType='fade'> 
                 <View>
-
+                    <FlatList
+                     data={this.state.lists}
+                     renderItem={itemData => <ListHome title={itemData.item.title}/> }
+                     keyExtractor={itemData => itemData.id}/> 
                 </View>
                 <View style={styles.header} >
                     <View style={styles.navContainer}>
@@ -29,7 +58,7 @@ class Home extends Component {
             </Modal>
         );
     };
-    
+
 };
 
 const styles = StyleSheet.create({
