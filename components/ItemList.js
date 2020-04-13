@@ -1,20 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import LookAtList from './LookAtList'
 
-const ListHome = props => {
-    const [listLook, setlistLook] = useState(false);
-
-    const goHome = () => {
-        setlistLook(false)
-      }
+const ItemList = props => {
 
     return(
         <TouchableOpacity
-            onPress={() => setlistLook(true) }>
-            <View>
-                <LookAtList visible={listLook} goHome={goHome} info={props.list}/>
-            </View>
+            onPress={() => alert('HITTTT') }>
             <View style={styles.listItem}>
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
@@ -22,7 +13,9 @@ const ListHome = props => {
                         <Image style={styles.logo} source={require('../Images/SDCircle.png')}></Image>
                     </TouchableOpacity>   
                 </View>
-                    <Text style={styles.listText}>{props.list.title}</Text>
+
+                    <Text style={styles.listText}>{props.item.title}</Text>
+                    
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
                         onPress={() => alert('hitt')}>
@@ -38,13 +31,14 @@ const styles = StyleSheet.create({
     listItem:{
         padding: 10,
         marginVertical: 10,
-        backgroundColor: '#e7d39f',
+        // backgroundColor: '#ffd31d',
         borderColor: '#522d5b',
         borderWidth: 2,
         flexDirection: 'row',
         justifyContent:'space-between',
         alignItems:'center',
-        width:'100%',
+        alignSelf:'center',
+        width:'85%',
     },
     listText:{
         paddingLeft: 10,
@@ -66,4 +60,4 @@ const styles = StyleSheet.create({
         alignItems:'center'
     }
 })
-export default ListHome
+export default ItemList
