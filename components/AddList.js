@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Ionicons } from '@expo/vector-icons';
 import { View, TextInput, StyleSheet, Button, Modal, AsyncStorage, StatusBar, TouchableOpacity, Text, Image } from 'react-native'
 import Home from './Home';
 

@@ -31,6 +31,7 @@ class Home extends Component {
             this.setState({
                 lists: lists
             })
+            console.log(this.state.lists)
           } catch (error) {
             console.log(error)
             alert('Something went wrong please try again!')
@@ -43,7 +44,7 @@ class Home extends Component {
                 <View>
                     <FlatList
                      data={this.state.lists}
-                     renderItem={itemData => <ListHome title={itemData.item.title}/> }
+                     renderItem={itemData => <ListHome list={itemData.item}/> }
                      keyExtractor={itemData => itemData.id}/> 
                 </View>
                 <View style={styles.header} >
