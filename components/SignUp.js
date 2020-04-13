@@ -1,4 +1,5 @@
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import { View, TextInput, StyleSheet, Button, Modal, StatusBar, TouchableOpacity, Text } from 'react-native'
 
 
@@ -35,7 +36,7 @@ export default class SignUp extends Component{
                             <Text style={styles.btnText}>Cancel</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => alert('hit!')}
+                            onPress={this.signUpUser}
                             style={styles.button}>
                             <Text style={styles.btnText}>SignUp</Text>
                         </TouchableOpacity>
@@ -44,6 +45,26 @@ export default class SignUp extends Component{
             </Modal>
         );
     };
+    signUpUser = async() => {
+        if(this.state.username && this.state.password){
+            axios.post("https://simply-do-backend.herokuapp.com/users", {
+                username: this.state.username, 
+                password: this.state.password
+            })
+            .then(response => this.signedUp(response.data))
+            .catch(error => {
+                console.log(error)
+                alert("Authentication Failed\nPlease Try Again")
+            })
+        }else{
+            alert("Please enter a\nUsername and Password!")
+        };
+    };
+
+    signedUp = (data) => {
+        data.user.created_at ? this.props.navigation.navigate('Login'): alert("Something went wrong\nPlease try again!")
+    }
+
 };
 
 const styles = StyleSheet.create({  
