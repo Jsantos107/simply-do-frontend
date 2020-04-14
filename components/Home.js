@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
         width:'100%',
         backgroundColor: '#e7d39f',
         padding: 5,
-        position:'absolute',
+        borderColor: '#522d5b',
+        borderWidth: 3,
         bottom: 0
     }, 
     navContainer:{

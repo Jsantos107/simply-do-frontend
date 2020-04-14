@@ -61,6 +61,7 @@ export default class AddList extends Component{
             axios.post("https://simply-do-backend.herokuapp.com/lists", {
                 title: this.state.title, 
                 description: this.state.description,
+                done: false,
                 user_id: ID
             })
             .then(response => this.AddedList(response.data))
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     input:{
         borderColor:'black', 
         backgroundColor: '#fff',
-        borderWidth: 1, 
+        borderWidth: 3, 
         padding:15, 
         width:'80%',
         marginBottom: 10,
@@ -126,7 +127,8 @@ const styles = StyleSheet.create({
         width:'100%',
         backgroundColor: '#e7d39f',
         padding: 5,
-        position:'absolute',
+        borderColor: '#522d5b',
+        borderWidth: 3,
         bottom: 0
     }, 
     navContainer:{
