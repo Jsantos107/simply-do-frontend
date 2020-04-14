@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
 import LookAtList from './LookAtList'
 
 const ListHome = props => {
@@ -8,7 +8,49 @@ const ListHome = props => {
     const goHome = () => {
         setlistLook(false)
       }
+    const checkList = (info) => {
+        fetch(`https://simply-do-backend.herokuapp.com/lists/${info.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: info.title,
+                description: info.description,
+                done: true
+            })
+        })
+        .then(alert('Your list has been checked'))
+        .catch(error => {
+            console.log(error)
+            alert("Something went wrong please try again!")
+        })
+    }  
+    const checking = (info) =>{
+        Alert.alert(
+            "Are you sure you would like to check?",
+            "",
+            [
+            {
+                text: "Cancel",
+            },
+            {
+                text: "No",
+                style: "cancel"
+            },
+            { text: "Yes", onPress: () => checkList(info) }
+            ],
+            { cancelable: false }
+        );
+    }
 
+    let checked;
+      if(props.list.done === true){
+          checked = <Image style={styles.checkedLogo} source={require('../Images/SDLogo.png')}></Image>
+      }else{
+          checked = <Image style={styles.logo} source={require('../Images/SDCircle.png')}></Image>
+      }
     return(
         <TouchableOpacity
             onPress={() => setlistLook(true) }>
@@ -18,8 +60,8 @@ const ListHome = props => {
             <View style={styles.listItem}>
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
-                        onPress={() => alert('hit')}>
-                        <Image style={styles.logo} source={require('../Images/SDCircle.png')}></Image>
+                        onPress={() => checking(props.list)}>
+                        {checked}
                     </TouchableOpacity>   
                 </View>
                     <Text style={styles.listText}>{props.list.title}</Text>
@@ -64,6 +106,10 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent:'center',
         alignItems:'center'
+    },
+    checkedLogo:{
+        width: 45,
+        height: 50
     }
 })
 export default ListHome
