@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { View, TextInput, StyleSheet, Button, Modal, AsyncStorage, StatusBar, TouchableOpacity, Text, Image } from 'react-native'
-import Home from './Home';
+import { View, TextInput, StyleSheet, Modal, AsyncStorage, TouchableOpacity, Text, Image } from 'react-native'
 
 
 export default class AddList extends Component{
     state={
         title: '',
         description: '',
-        urgent: false,
         addItem: false
     };
     cancel = () => {
@@ -38,7 +36,7 @@ export default class AddList extends Component{
                             <Image style={styles.logo} source={require('../Images/SDCancel.png')}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => alert("HIT!")}
+                            onPress={this.newList}
                             style={styles.button}>
                             <Image style={styles.logo} source={require('../Images/SDPlus.png')}></Image>
                         </TouchableOpacity>
@@ -56,6 +54,29 @@ export default class AddList extends Component{
             </Modal>
         );
     };
+
+    newList = async() => {
+        const ID = await AsyncStorage.getItem('userId')
+        if(this.state.title && ID){
+            axios.post("https://simply-do-backend.herokuapp.com/lists", {
+                title: this.state.title, 
+                description: this.state.description,
+                user_id: ID
+            })
+            .then(response => this.AddedList(response.data))
+            .catch(error => {
+                console.log(error)
+                alert("Please Try Again")
+            })
+        }else{
+            alert("Please enter a title")
+        };
+    };
+
+    AddedList = (data) => {
+        data.list.created_at ? this.props.navigation.navigate('Home', {newList: data.list}) : alert("Something went wrong\nPlease try again!")
+    };
+
 };
 const styles = StyleSheet.create({  
     addContainer:{
