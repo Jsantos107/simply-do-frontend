@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, Image, AsyncStorage, Button } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, Image, AsyncStorage, Button, RefreshControl } from 'react-native';
 import Welcome from './Welcome';
 import { FlatList } from 'react-native-gesture-handler';
 import ListHome from './ListHome'
 
-const Drawer = createDrawerNavigator();
 
 class Home extends Component {
     state={
         lists:[],
-        done:false
+        done:false,
+        refreshing: false
     };
     componentDidMount(){ this.loadPage() }
 
@@ -24,6 +24,7 @@ class Home extends Component {
               } 
         })
         .then(async (response) => this.list(response.data))
+        .then( this.setState({refreshing: false}))
     }
     list = async(data) =>{
         try {
@@ -31,21 +32,29 @@ class Home extends Component {
             this.setState({
                 lists: lists
             })
-            console.log(this.state.lists)
           } catch (error) {
             console.log(error)
             alert('Something went wrong please try again!')
-            this.props.navigation.navigate('Welcome')
+            this.props.navigation.navigate('Login')
           };
     };
+    onRefresh = () =>{
+        this.setState({refreshing:true})
+        this.loadPage()
+    }
     render(){
         return(
             <Modal animationType='fade'> 
-                <View>
+                    <View style={styles.listItem}>
+                            <Text style={styles.listText}> List </Text>
+                    </View> 
+                <View style={styles.list}>
                     <FlatList
                      data={this.state.lists}
                      renderItem={itemData => <ListHome list={itemData.item}/> }
-                     keyExtractor={itemData => itemData.id}/> 
+                     keyExtractor={itemData => itemData.id.toString()}
+                     refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh}/>}
+                     /> 
                 </View>
                 <View style={styles.header} >
                     <View style={styles.navContainer}>
@@ -63,6 +72,20 @@ class Home extends Component {
 };
 
 const styles = StyleSheet.create({
+    listItem:{
+        padding: 10,
+        backgroundColor: '#e7d39f',
+        borderColor: '#522d5b',
+        borderWidth: 2,
+        flexDirection: 'row',
+        alignItems:'center',
+        width:'100%',
+    },
+    listText:{
+        paddingLeft: 10,
+        fontFamily: "Kanit-Regular",
+        fontSize: 30
+    },
     header:{
         width:'100%',
         backgroundColor: '#e7d39f',
@@ -87,6 +110,9 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         marginBottom: '10%'
     },
+    list:{
+        height: '78%'
+    }
 
 });
 
