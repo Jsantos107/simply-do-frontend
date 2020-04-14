@@ -1,19 +1,72 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { View, StyleSheet, Modal, TouchableOpacity, Text, Image, FlatList } from 'react-native'
+import { View, StyleSheet, Modal, TouchableOpacity, Text, Image, FlatList, Alert } from 'react-native'
 import ItemList from './ItemList'
 
-export default class AddList extends Component{
+export default class LookAtList extends Component{
+    deleteList = (id) => {
+        fetch(`https://simply-do-backend.herokuapp.com/lists/${id}`, {
+            method: "DELETE"
+        })
+        .then(alert('Your list has been deleted!'))   
+        .catch(error => {
+            console.log(error)
+            alert("Something went wrong please try again!")
+        })
+      }
+    checkList = (info) => {
+        console.log(info)
+    }
+    areYouSure = (id) =>{
+        Alert.alert(
+            "Are you sure you would like to delete?",
+            "",
+            [
+            {
+                text: "Cancel",
+            },
+            {
+                text: "No",
+                style: "cancel"
+            },
+            { text: "Yes", onPress: () => this.deleteList(id) }
+            ],
+            { cancelable: false }
+        );
+    }
+    checking = (info) =>{
+        Alert.alert(
+            "Are you sure you would like to check?",
+            "",
+            [
+            {
+                text: "Cancel",
+            },
+            {
+                text: "No",
+                style: "cancel"
+            },
+            { text: "Yes", onPress: () => this.checkList(info) }
+            ],
+            { cancelable: false }
+        );
+    }
 
     render(){
+        let checked;
+        if(this.props.info.done === true){
+            checked = <Image style={styles.checkedLogo} source={require('../Images/SDLogo.png')}></Image>
+        }else{
+            checked = <Image style={styles.logo} source={require('../Images/SDCircle.png')}></Image>
+        }
         return( 
             <Modal visible={this.props.visible}  animationType='fade'>
                 <View>
                     <View style={styles.listItem}>
                         <View style={styles.imageContainer}>
                             <TouchableOpacity
-                                onPress={() => alert('hit')}>
-                                <Image style={styles.logo} source={require('../Images/SDCircle.png')}></Image>
+                                onPress={() => this.checking(this.props.info)}>
+                                    {checked}
                             </TouchableOpacity>   
                         </View>
                             <Text style={styles.listText}>{this.props.info.title}</Text>
@@ -39,7 +92,7 @@ export default class AddList extends Component{
                 </View>
                 <View style={styles.deleteContainer} > 
                     <TouchableOpacity
-                    onPress={()=>alert('delete')}>
+                    onPress={() =>{ this.areYouSure(this.props.info.id)}}>
                         <View style={styles.deleteView}>
                             <Text style={styles.deleteText}> Delete List</Text>
                         </View>
@@ -49,7 +102,7 @@ export default class AddList extends Component{
                     <View style={styles.navContainer}>
                         <TouchableOpacity
                             onPress={this.props.goHome}>
-                            <Image style={styles.logo} source={require('../Images/SDHome.png')}></Image>
+                            <Image style={styles.homeLogo} source={require('../Images/SDHome.png')}></Image>
                         </TouchableOpacity>                      
                     </View>
                 </View>
@@ -98,8 +151,8 @@ const styles = StyleSheet.create({
         fontSize: 25
     },
     logo: {
-        width: 40,
-        height: 40
+        width: 50,
+        height: 50
     },
     editLogo: {
         width: 55,
@@ -146,9 +199,13 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems: 'center'
     },
-    logo: {
+    homeLogo: {
         width: 60,
         height: 65,
+    },
+    checkedLogo:{
+        width: 50,
+        height: 55, 
     }
     
 
