@@ -15,7 +15,23 @@ export default class LookAtList extends Component{
         })
       }
     checkList = (info) => {
-        console.log(info)
+        fetch(`https://simply-do-backend.herokuapp.com/lists/${info.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: info.title,
+                description: info.description,
+                done: true
+            })
+        })
+        .then(alert('Your list has been checked'))
+        .catch(error => {
+            console.log(error)
+            alert("Something went wrong please try again!")
+        })
     }
     areYouSure = (id) =>{
         Alert.alert(
