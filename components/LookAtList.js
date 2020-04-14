@@ -88,7 +88,7 @@ export default class LookAtList extends Component{
                             <Text style={styles.listText}>{this.props.info.title}</Text>
                         <View style={styles.imageContainer}>
                             <TouchableOpacity
-                                onPress={() => alert('edit')}>
+                                onPress={() => this.props.edit(true)}>
                                 <Image style={styles.editLogo} source={require('../Images/SDEdit.png')}></Image>
                             </TouchableOpacity> 
                         </View>
@@ -105,6 +105,14 @@ export default class LookAtList extends Component{
                      data={this.props.info.items}
                      renderItem={itemData => <ItemList item={itemData.item}/> }
                      keyExtractor={itemData => itemData.id}/> 
+                </View>
+                <View style={styles.itemContainer} > 
+                    <TouchableOpacity
+                    onPress={() => alert('hit')}>
+                        <View style={styles.itemView}>
+                            <Text style={styles.itemText}> Add Item</Text>
+                        </View>
+                    </TouchableOpacity>                      
                 </View>
                 <View style={styles.deleteContainer} > 
                     <TouchableOpacity
@@ -199,6 +207,25 @@ const styles = StyleSheet.create({
     deleteText:{
         fontFamily: "Kanit-Regular",
         fontSize: 25
+    },
+    itemContainer:{
+        marginTop: 15 ,
+        width:'80%',
+        alignSelf:'center',
+        backgroundColor:'#00bcd4',
+        borderColor: '#522d5b',
+        borderWidth: 2,
+        padding: 5,
+    }, 
+    itemView:{
+        width:'95%',
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignItems: 'center'
+    },
+    itemText:{
+        fontFamily: "Kanit-Regular",
+        fontSize: 25,
     },
 
     botContainer:{

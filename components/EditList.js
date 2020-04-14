@@ -9,24 +9,23 @@ export default class editList extends Component{
         done: this.props.list.done
     };
     submitList = () => {
-        console.log(this.state)
-        // fetch(`https://simply-do-backend.herokuapp.com/lists/${info.id}`, {
-        //     method: 'PATCH',
-        //     headers: {
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         title: info.title,
-        //         description: info.description,
-        //         done: true
-        //     })
-        // })
-        // .then(alert('Your list has been checked'))
-        // .catch(error => {
-        //     console.log(error)
-        //     alert("Something went wrong please try again!")
-        // })
+        fetch(`https://simply-do-backend.herokuapp.com/lists/${this.props.list.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: this.state.title,
+                description: this.state.description,
+                done: this.state.done
+            })
+        })
+        .then(alert('Your list has been changed'))
+        .catch(error => {
+            console.log(error)
+            alert("Something went wrong please try again!")
+        })
     };
 
     checkingReady = () =>{
@@ -41,7 +40,7 @@ export default class editList extends Component{
                 text: "No",
                 style: "cancel"
             },
-            { text: "Yes", onPress: () => this.submitList }
+            { text: "Yes", onPress: () => this.submitList() }
             ],
             { cancelable: false }
         );
@@ -53,6 +52,7 @@ export default class editList extends Component{
             this.setState({done: true})  
         }
     }
+
     render(){
         let checked;
         if(this.state.done === true){
