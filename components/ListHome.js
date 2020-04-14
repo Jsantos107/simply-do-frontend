@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
 import LookAtList from './LookAtList'
-
+import EditList from './EditList'
 const ListHome = props => {
     const [listLook, setlistLook] = useState(false);
+    const [editList, setEditList] = useState(false);
 
     const goHome = () => {
         setlistLook(false)
+        setEditList(false)
       }
     const checkList = (info) => {
         fetch(`https://simply-do-backend.herokuapp.com/lists/${info.id}`, {
@@ -27,6 +29,7 @@ const ListHome = props => {
             alert("Something went wrong please try again!")
         })
     }  
+    
     const checking = (info) =>{
         Alert.alert(
             "Are you sure you would like to check?",
@@ -57,6 +60,9 @@ const ListHome = props => {
             <View>
                 <LookAtList visible={listLook} goHome={goHome} info={props.list}/>
             </View>
+            <View>
+                <EditList visible={editList} goHome={goHome} list={props.list} /> 
+            </View>
             <View style={styles.listItem}>
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
@@ -67,7 +73,7 @@ const ListHome = props => {
                     <Text style={styles.listText}>{props.list.title}</Text>
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
-                        onPress={() => alert('hitt')}>
+                        onPress={() => setEditList(true) }>
                         <Image style={styles.editLogo} source={require('../Images/SDEdit.png')}></Image>
                     </TouchableOpacity> 
                 </View>

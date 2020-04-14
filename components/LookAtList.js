@@ -88,7 +88,7 @@ export default class LookAtList extends Component{
                             <Text style={styles.listText}>{this.props.info.title}</Text>
                         <View style={styles.imageContainer}>
                             <TouchableOpacity
-                                onPress={() => alert('hitt')}>
+                                onPress={() => alert('edit')}>
                                 <Image style={styles.editLogo} source={require('../Images/SDEdit.png')}></Image>
                             </TouchableOpacity> 
                         </View>
