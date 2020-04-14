@@ -58,7 +58,7 @@ const ListHome = props => {
         <TouchableOpacity
             onPress={() => setlistLook(true) }>
             <View>
-                <LookAtList visible={listLook} goHome={goHome} info={props.list}/>
+                <LookAtList visible={listLook} goHome={goHome} info={props.list} edit={setEditList}/>
             </View>
             <View>
                 <EditList visible={editList} goHome={goHome} list={props.list} /> 
