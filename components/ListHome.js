@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     },
     listText:{
         paddingLeft: 10,
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 25
     },
     logo: {

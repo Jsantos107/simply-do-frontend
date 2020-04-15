@@ -13,7 +13,7 @@ import AddList from './components/AddList'
 
 const Stack = createStackNavigator();
 
-let customFonts = { 'Kanit-Regular': require('./assets/fonts/Kanit-Regular.ttf') };
+let customFonts = { 'K2D-Medium': require('./assets/fonts/K2D-Medium.ttf') };
 export default class App extends React.Component {
   state = {
     fontsLoaded: false,
