@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, Image, AsyncStorage, Button, RefreshControl } from 'react-native';
-import Welcome from './Welcome';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, Image, AsyncStorage, RefreshControl } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ListHome from './ListHome'
 
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     },
     listText:{
         paddingLeft: 10,
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 30
     },
     header:{

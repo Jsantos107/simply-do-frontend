@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         margin: 10,
-        fontFamily: "Kanit-Regular"
+        fontFamily: "K2D-Medium"
     },
     buttonContainer:{
         flexDirection: 'row',
@@ -87,6 +87,8 @@ const styles = StyleSheet.create({
         width: '75%',
     },
     button:{
+        borderWidth: 2,
+        borderRadius: 10,
         backgroundColor: "#fb7b6b",
         padding: 15,
         width:'40%'
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     btnText:{
         fontSize:18,
         textAlign:'center',
-        fontFamily: "Kanit-Regular"
+        fontFamily: "K2D-Medium"
     },
     input:{
         borderColor:'black', 
@@ -103,6 +105,6 @@ const styles = StyleSheet.create({
         padding:15, 
         width:'80%',
         marginBottom: 10,
-        fontFamily: "Kanit-Regular"
+        fontFamily: "K2D-Medium"
       }
  });

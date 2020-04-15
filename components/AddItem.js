@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Modal, TouchableOpacity, Text, Image, Alert } from 'react-native'
 
-
-export default class editList extends Component{
+export default class AddItem extends Component{
     state= {
-        title: this.props.list.title,
-        description: this.props.list.description,
-        done: this.props.list.done
+        title: '',
+        description: '',
+        done: false
     };
-    submitList = () => {
-        fetch(`https://simply-do-backend.herokuapp.com/lists/${this.props.list.id}`, {
-            method: 'PATCH',
+    submitItem = () => {
+        console.log(this.state)
+      fetch(`https://simply-do-backend.herokuapp.com/items`, {
+            method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
@@ -18,82 +18,32 @@ export default class editList extends Component{
             body: JSON.stringify({
                 title: this.state.title,
                 description: this.state.description,
-                done: this.state.done
+                done: this.state.done,
+                list_id: this.props.list.id
             })
         })
-        .then(alert('Your list has been changed'))
+        .then(response => response.json())
+        .then((result) => this.sending)
         .catch(error => {
             console.log(error)
             alert("Something went wrong please try again!")
-        })
+        })  
     };
-    deleteList = (id) => {
-        fetch(`https://simply-do-backend.herokuapp.com/lists/${id}`, {
-            method: "DELETE"
-        })
-        .then(alert('Your list has been deleted!'))   
-        .catch(error => {
-            console.log(error)
-            alert("Something went wrong please try again!")
-        })
-      }
-    checkingReady = () =>{
-        Alert.alert(
-            "Are you sure you are done editing?",
-            "",
-            [
-            {
-                text: "Cancel",
-            },
-            {
-                text: "No",
-                style: "cancel"
-            },
-            { text: "Yes", onPress: () => this.submitList() }
-            ],
-            { cancelable: false }
-        );
-    }
-    areYouSure = (id) =>{
-        Alert.alert(
-            "Are you sure you would like to delete?",
-            "",
-            [
-            {
-                text: "Cancel",
-            },
-            {
-                text: "No",
-                style: "cancel"
-            },
-            { text: "Yes", onPress: () => this.deleteList(id) }
-            ],
-            { cancelable: false }
-        );
-    }
-    done = () => {
-        if(this.state.done === true){
-            this.setState({done: false})  
-        }else {
-            this.setState({done: true})  
-        }
-    }
 
+    sending = (result) => {
+        this.props.goHome(result)
+    }
     render(){
-        let checked;
-        if(this.state.done === true){
-            checked = <Image style={styles.checkedLogo} source={require('../Images/SDLogo.png')}></Image>
-        }else{
-            checked = <Image style={styles.notCLogo} source={require('../Images/SDCircle.png')}></Image>
-        }
+
         return( 
             <Modal visible={this.props.visible} animationType='fade'>
+
                 <View style={styles.addContainer}>
-                    <Text style={styles.title}> Edit List </Text>
+                    <Text style={styles.title}> Add Item </Text>
                     <View style={styles.listTitleView}>
                         <Text style={styles.listTitle}>Title:</Text>
                         <TextInput style={styles.input}
-                        autoCapitalize={"none"}
+                        autoCapitalize={"none"} placeholder="Title"
                         value={this.state.title} onChangeText={(title)=> this.setState({title})}/>
                     </View>
                     <View style={styles.listDescriptionView}>
@@ -101,21 +51,15 @@ export default class editList extends Component{
                         <TextInput style={styles.input} placeholder="Description" autoCapitalize={"none"} 
                         value={this.state.description} onChangeText={(description)=> this.setState({description})}/>
                     </View>
-                    <View style={styles.listDoneView}>
-                        <Text style={styles.listDone}>Simply Done:</Text>
-                        <TouchableOpacity
-                            onPress={this.done}>
-                            {checked}
-                        </TouchableOpacity>
-                    </View>
+  
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            onPress={this.areYouSure} 
+                            onPress={this.props.goHome} 
                             style={styles.cancelBtn}>
                             <Image style={styles.logo} source={require('../Images/SDCancel.png')}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={this.checkingReady}
+                            onPress={this.submitItem}
                             style={styles.button}>
                             <Image style={styles.logo} source={require('../Images/SDPlus.png')}></Image>
                         </TouchableOpacity>
@@ -207,16 +151,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50
     },
-    listDoneView:{
-        flexDirection:'row',
-        alignItems:'center'
-    }, 
-    listDone:{
-        fontSize: 25,
-        textAlign: 'center',
-        margin: 15,
-        fontFamily: "K2D-Medium"
-    },
+
     listDescription:{
         fontSize: 25,
         margin: 15,

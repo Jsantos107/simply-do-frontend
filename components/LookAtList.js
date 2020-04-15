@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { View, StyleSheet, Modal, TouchableOpacity, Text, Image, FlatList, Alert } from 'react-native'
+import { View, StyleSheet, Modal, TouchableOpacity, Text, Image, FlatList, Alert, ScrollView} from 'react-native'
 import ItemList from './ItemList'
-
+import AddItem from './AddItem'
 export default class LookAtList extends Component{
-    deleteList = (id) => {
-        fetch(`https://simply-do-backend.herokuapp.com/lists/${id}`, {
-            method: "DELETE"
-        })
-        .then(alert('Your list has been deleted!'))   
-        .catch(error => {
-            console.log(error)
-            alert("Something went wrong please try again!")
-        })
-      }
+    state = {
+        newItems:[],
+        addItem: false,
+        refreshing: false
+    }
+
     checkList = (info) => {
         fetch(`https://simply-do-backend.herokuapp.com/lists/${info.id}`, {
             method: 'PATCH',
@@ -33,23 +29,8 @@ export default class LookAtList extends Component{
             alert("Something went wrong please try again!")
         })
     }
-    areYouSure = (id) =>{
-        Alert.alert(
-            "Are you sure you would like to delete?",
-            "",
-            [
-            {
-                text: "Cancel",
-            },
-            {
-                text: "No",
-                style: "cancel"
-            },
-            { text: "Yes", onPress: () => this.deleteList(id) }
-            ],
-            { cancelable: false }
-        );
-    }
+
+
     checking = (info) =>{
         Alert.alert(
             "Are you sure you would like to check?",
@@ -67,7 +48,12 @@ export default class LookAtList extends Component{
             { cancelable: false }
         );
     }
-
+    goHome = (result) => {
+        this.setState({
+            newItems: [...this.state.newItems, result]
+          })
+        this.setState({addItem:false})
+    }
     render(){
         let checked;
         if(this.props.info.done === true){
@@ -77,6 +63,9 @@ export default class LookAtList extends Component{
         }
         return( 
             <Modal visible={this.props.visible}  animationType='fade'>
+                <View>
+                    <AddItem visible={this.state.addItem} goHome={this.goHome} list={this.props.info}/>
+                </View>
                 <View>
                     <View style={styles.listItem}>
                         <View style={styles.imageContainer}>
@@ -99,29 +88,28 @@ export default class LookAtList extends Component{
                     <Text style={styles.listDInro}> {this.props.info.description}</Text>
                 </View>
 
+                    
                 <View>
-                    <Text style={styles.itemIntro}>Items:</Text>
+                    <View style={styles.itemCont}>
+                        <Text style={styles.itemIntro}>Items:</Text>
+                        <View style={styles.itemContainer} > 
+                            <TouchableOpacity
+                            onPress={() => this.setState({addItem: true})}>
+                                <View style={styles.itemView}>
+                                    <Text style={styles.itemText}> Add Item</Text>
+                                </View>
+                            </TouchableOpacity>                      
+                        </View>  
+                    </View>
+
                     <FlatList
                      data={this.props.info.items}
                      renderItem={itemData => <ItemList item={itemData.item}/> }
-                     keyExtractor={itemData => itemData.id}/> 
+                     keyExtractor={itemData => itemData.id.toString()}
+                     /> 
                 </View>
-                <View style={styles.itemContainer} > 
-                    <TouchableOpacity
-                    onPress={() => alert('hit')}>
-                        <View style={styles.itemView}>
-                            <Text style={styles.itemText}> Add Item</Text>
-                        </View>
-                    </TouchableOpacity>                      
-                </View>
-                <View style={styles.deleteContainer} > 
-                    <TouchableOpacity
-                    onPress={() =>{ this.areYouSure(this.props.info.id)}}>
-                        <View style={styles.deleteView}>
-                            <Text style={styles.deleteText}> Delete List</Text>
-                        </View>
-                    </TouchableOpacity>                      
-                </View>
+
+
                 <View style={styles.botContainer} >
                     <View style={styles.navContainer}>
                         <TouchableOpacity
@@ -150,7 +138,7 @@ const styles = StyleSheet.create({
     },
     listText:{
         paddingLeft: 10,
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 25
     },
     listDescription:{
@@ -162,16 +150,16 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     listDInro:{
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 20
     },
     listDText:{
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 25
     },
     itemIntro:{
         paddingLeft: 10,
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 25
     },
     logo: {
@@ -196,6 +184,7 @@ const styles = StyleSheet.create({
         borderColor: '#522d5b',
         borderWidth: 2,
         padding: 5,
+        borderRadius: 10,
     }, 
     deleteView:{
         marginBottom: 10,
@@ -205,17 +194,24 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     deleteText:{
-        fontFamily: "Kanit-Regular",
+        fontFamily: "K2D-Medium",
         fontSize: 25
     },
+    itemCont:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom:10
+    },
     itemContainer:{
-        marginTop: 15 ,
-        width:'80%',
+        marginTop: 10 ,
+        width:'40%',
+        height:50,
         alignSelf:'center',
         backgroundColor:'#00bcd4',
         borderColor: '#522d5b',
         borderWidth: 2,
         padding: 5,
+        borderRadius: 10
     }, 
     itemView:{
         width:'95%',
@@ -224,8 +220,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     itemText:{
-        fontFamily: "Kanit-Regular",
-        fontSize: 25,
+        fontFamily: "K2D-Medium",
+        fontSize: 20
     },
 
     botContainer:{

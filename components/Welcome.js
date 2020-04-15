@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         margin:15,
-        fontFamily: "Kanit-Regular"
+        fontFamily: "K2D-Medium"
     },
     btnContainer:{
         flexDirection: 'row',
@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     button:{
+        borderWidth: 2,
+        borderRadius: 10,
         backgroundColor: "#e7d39f",
         padding: 15,
         width:'45%',
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     btnText:{
         fontSize:18,
         textAlign:'center',
-        fontFamily: "Kanit-Regular"
+        fontFamily: "K2D-Medium"
     }
 });
 
