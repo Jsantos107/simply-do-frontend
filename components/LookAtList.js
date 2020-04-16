@@ -24,6 +24,7 @@ export default class LookAtList extends Component{
             })
         })
         .then(alert('Your list has been checked'))
+        .then(this.props.goHome)
         .catch(error => {
             console.log(error)
             alert("Something went wrong please try again!")
@@ -49,9 +50,6 @@ export default class LookAtList extends Component{
         );
     }
     goHome = (result) => {
-        this.setState({
-            newItems: [...this.state.newItems, result]
-          })
         this.setState({addItem:false})
     }
     render(){
@@ -101,12 +99,14 @@ export default class LookAtList extends Component{
                             </TouchableOpacity>                      
                         </View>  
                     </View>
-
-                    <FlatList
-                     data={this.props.info.items}
-                     renderItem={itemData => <ItemList item={itemData.item}/> }
-                     keyExtractor={itemData => itemData.id.toString()}
-                     /> 
+                    <View style={styles.itemList}>
+                        <FlatList
+                        data={this.props.info.items}
+                        renderItem={itemData => <ItemList item={itemData.item}/> }
+                        keyExtractor={itemData => itemData.id.toString()}
+                        />
+                    </View>
+ 
                 </View>
 
 
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     listText:{
         paddingLeft: 10,
         fontFamily: "K2D-Medium",
+        width:'50%',
         fontSize: 25
     },
     listDescription:{
@@ -161,6 +162,9 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontFamily: "K2D-Medium",
         fontSize: 25
+    },
+    itemList:{
+        height: "69%",
     },
     logo: {
         width: 50,

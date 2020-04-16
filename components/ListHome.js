@@ -70,13 +70,10 @@ const ListHome = props => {
                         {checked}
                     </TouchableOpacity>   
                 </View>
+                <View style={styles.lView}>
                     <Text style={styles.listText}>{props.list.title}</Text>
-                <View style={styles.imageContainer}>
-                    <TouchableOpacity
-                        onPress={() => setEditList(true) }>
-                        <Image style={styles.editLogo} source={require('../Images/SDEdit.png')}></Image>
-                    </TouchableOpacity> 
                 </View>
+
             </View> 
         </TouchableOpacity> 
     )
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
         borderColor: '#522d5b',
         borderWidth: 2,
         flexDirection: 'row',
-        justifyContent:'space-between',
+        // justifyContent:'space-between',
         alignItems:'center',
         width:'100%',
     },
@@ -98,6 +95,10 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontFamily: "K2D-Medium",
         fontSize: 25
+    },
+    lView:{
+        width: "50%",
+        marginLeft: 50
     },
     logo: {
         width: 40,

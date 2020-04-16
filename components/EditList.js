@@ -21,17 +21,19 @@ export default class editList extends Component{
                 done: this.state.done
             })
         })
-        .then(alert('Your list has been changed'))
+        .then(alert('Your list has been changed!'))
+        .then(this.props.goHome)
         .catch(error => {
             console.log(error)
             alert("Something went wrong please try again!")
         })
     };
-    deleteList = (id) => {
-        fetch(`https://simply-do-backend.herokuapp.com/lists/${id}`, {
+    deleteList = () => {
+        fetch(`https://simply-do-backend.herokuapp.com/lists/${this.props.list.id}`, {
             method: "DELETE"
         })
-        .then(alert('Your list has been deleted!'))   
+        .then(alert('Your list has been deleted!'))
+        .then(this.props.goHome)
         .catch(error => {
             console.log(error)
             alert("Something went wrong please try again!")
@@ -54,7 +56,7 @@ export default class editList extends Component{
             { cancelable: false }
         );
     }
-    areYouSure = (id) =>{
+    areYouSure = () =>{
         Alert.alert(
             "Are you sure you would like to delete?",
             "",
@@ -66,26 +68,13 @@ export default class editList extends Component{
                 text: "No",
                 style: "cancel"
             },
-            { text: "Yes", onPress: () => this.deleteList(id) }
+            { text: "Yes", onPress: () => this.deleteList() }
             ],
             { cancelable: false }
         );
     }
-    done = () => {
-        if(this.state.done === true){
-            this.setState({done: false})  
-        }else {
-            this.setState({done: true})  
-        }
-    }
 
     render(){
-        let checked;
-        if(this.state.done === true){
-            checked = <Image style={styles.checkedLogo} source={require('../Images/SDLogo.png')}></Image>
-        }else{
-            checked = <Image style={styles.notCLogo} source={require('../Images/SDCircle.png')}></Image>
-        }
         return( 
             <Modal visible={this.props.visible} animationType='fade'>
                 <View style={styles.addContainer}>
@@ -101,13 +90,7 @@ export default class editList extends Component{
                         <TextInput style={styles.input} placeholder="Description" autoCapitalize={"none"} 
                         value={this.state.description} onChangeText={(description)=> this.setState({description})}/>
                     </View>
-                    <View style={styles.listDoneView}>
-                        <Text style={styles.listDone}>Simply Done:</Text>
-                        <TouchableOpacity
-                            onPress={this.done}>
-                            {checked}
-                        </TouchableOpacity>
-                    </View>
+
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             onPress={this.areYouSure} 
@@ -117,7 +100,7 @@ export default class editList extends Component{
                         <TouchableOpacity
                             onPress={this.checkingReady}
                             style={styles.button}>
-                            <Image style={styles.logo} source={require('../Images/SDPlus.png')}></Image>
+                            <Image style={styles.logo} source={require('../Images/SDLogo.png')}></Image>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -165,11 +148,6 @@ const styles = StyleSheet.create({
         padding: 15,
         width:'40%'
     },
-    btnText:{
-        fontSize:18,
-        textAlign:'center',
-        fontFamily: "K2D-Medium"
-    },
     input:{
         borderColor:'black', 
         backgroundColor: '#fff',
@@ -198,25 +176,7 @@ const styles = StyleSheet.create({
     logo: {
         width: 60,
         height: 65,
-    },
-    checkedLogo:{
-        width: 50,
-        height: 55, 
-    },
-    notCLogo: {
-        width: 50,
-        height: 50
-    },
-    listDoneView:{
-        flexDirection:'row',
-        alignItems:'center'
     }, 
-    listDone:{
-        fontSize: 25,
-        textAlign: 'center',
-        margin: 15,
-        fontFamily: "K2D-Medium"
-    },
     listDescription:{
         fontSize: 25,
         margin: 15,

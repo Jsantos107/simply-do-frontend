@@ -22,17 +22,14 @@ export default class AddItem extends Component{
                 list_id: this.props.list.id
             })
         })
-        .then(response => response.json())
-        .then((result) => this.sending)
+        .then(alert('Your item has been added'))
+        .then(this.props.goHome)
         .catch(error => {
             console.log(error)
             alert("Something went wrong please try again!")
         })  
     };
 
-    sending = (result) => {
-        this.props.goHome(result)
-    }
     render(){
 
         return( 
